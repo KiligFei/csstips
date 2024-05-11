@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+      /* 方法一 */
+      .g-container {
+        container-type: size;
+        container-name: container;
+      }
+      .g-container2,
+      .g-container {
+        position: relative;
+        margin: auto;
+        width: 300px;
+        height: 200px;
+        padding: 10px;
+        line-height: 2;
+        background: #999;
+        color: #fff;
+        text-align: justify;
+        border: 5px solid #000;
+        resize: vertical;
+        overflow: hidden;
+
+        .g-content {
+          width: 100%;
+          height: 100%;
+        }
+
+        .g-content::before {
+          content: '↑';
+          font-size: 30px;
+          cursor: pointer;
+          position: absolute;
+          bottom: 0px;
+          left: 50%;
+          transform: translate(-50%, 0);
+          transition: 0.3s;
+        }
+      }
+      @container container (height <= 260px) {
+        .g-content::before {
+          opacity: 0;
+        }
+      }
+      /* 方法二 */
+      .g-container2 {
+        .g-content::before {
+          bottom: clamp(-9999px, calc(calc(100% - 260px) * 100000), 0px);
+          /* bottom: clamp(-9999px, calc(calc(100% - 260px)), 0px);
+          bottom: calc(100% - 260px); */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="g-container">
+      <div class="g-content">Lorem ipsum dolor s...</div>
+    </div>
+    <div class="g-container2">
+      <div class="g-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, amet</div>
+    </div>
+  </body>
+</html>
+
+<!-- 
+## 方法一
+简单解释一下：
+1. .g-container 它被用作容器查询的目标容器
+2. container-type 属性指定了容器的类型为 size，表示我们将使用容器的尺寸来应用样式。
+3. container-name 属性指定了容器的名称为 container，以便在后面的容器查询规则中引用。
+4. @container container (height <= 260px) {} 表示这是一个容器查询规则，在括号中的条件 (height <= 260px) 表示当容器的高度小于等于 260px 时，应用该规则下的样式
+具体规则为，如果容器的高度小于等于 260px 时，.g-content 元素的伪元素将变得透明 
+
+
+
+## 方法二
+简单解释一下：
+bottom: clamp(-9999px, calc(calc(100% - 260px) * 100000), 0px);
+
+1. clamp() 函数用于限制一个值的范围，它接受三个参数，分别是最小值、理想值和最大值。clamp() 函数会返回这三个值中的中间值。
+当 calc(100% - 260px) 的计算值是负数时，我们其实不希望 ICON 出现，此时，乘上一个超级大的倍数，依然是负数，不影响效果
+当 calc(100% - 260px) 的计算值是正数时，为了避免 ICON 处在只漏出部分的尴尬场景，通过乘上一个超级大的倍数，让整个计算值变得非常大，但是由于又有 clamp() 最大值的限制，无论计算值多大，都只会取 10px
+-->

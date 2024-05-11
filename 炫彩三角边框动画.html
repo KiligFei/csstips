@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      @property --angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+      }
+      .g-container {
+        width: 260px;
+        height: 260px;
+        filter: drop-shadow(0 0 5px hsl(162, 100%, 58%)) drop-shadow(0 0 10px hsl(270, 73%, 53%));
+      }
+      .g-triangle {
+        width: 200px;
+        height: 200px;
+        clip-path: polygon(50% 0%, 0% 100%, 8% 100%, 50% 15%, 88% 93%, 7% 93%, 7% 100%, 100% 100%);
+        background: conic-gradient(from var(--angle), hsl(162, 100%, 58%), hsl(270, 73%, 53%), hsl(162, 100%, 58%));
+        animation: rotate 3s infinite linear;
+      }
+      @keyframes rotate {
+        to {
+          --angle: 360deg;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="g-container">
+      <div class="g-triangle"></div>
+    </div>
+  </body>
+</html>

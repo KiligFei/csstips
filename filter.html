@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        background-color: white;
+      }
+
+      .g-container {
+        position: relative;
+        width: 300px;
+        height: 100px;
+        margin: auto;
+
+        .g-content {
+          height: 100px;
+          filter: contrast(20);
+          background-color: white;
+          overflow: hidden;
+
+          .g-filter {
+            filter: blur(10px);
+            height: 100px;
+            background: radial-gradient(
+              circle at 50% -10px,
+              transparent 0,
+              transparent 29px,
+              #000 40px,
+              #000
+            );
+          }
+        }
+      }
+    </style>
+  </head>
+  <!-- 
+    .g-content 添加了 filter: contrast(20) 和 background-color: white，
+    给 .g-filter 添加了 filter: blur(10px)
+    通过对比度滤镜把高斯模糊的模糊边缘给干掉，将原本的直角，变成了圆角
+    平滑内凹圆角由于应用了模糊滤镜，内部不建议再放置 DOM，最好当做背景使用，内部内容可以通过其他方式叠加在其上方即可
+    filter: blur()： 给图像设置高斯模糊效果
+    filter: contrast()： 调整图像的对比度
+   -->
+  <body>
+    <div class="g-container">
+      <div class="g-content">
+        <div class="g-filter"></div>
+      </div>
+    </div>
+  </body>
+</html>

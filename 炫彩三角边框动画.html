@@ -5,21 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      /* @Property CSS at-rule 是 CSS Houdini API 的一部分, 它允许开发者显式地定义他们的 CSS 自定义属性，允许进行属性类型检查、设定默认值以及定义该自定义属性是否可以被继承 */
+      /* 简单解读下：
+        @property --angle 中的 --angle 就是自定义属性的名称，定义后可在 CSS 中通过 var(--angle) 进行引用
+        syntax：该自定义属性的语法规则，也可以理解为表示定义的自定义属性的类型
+        inherits：是否允许继承
+        initial-value：初始值
+        其中，@property 规则中的 syntax 和 inherits 描述符是必需的。 
+      */
+
+      /*  在 JavaScript 内定义的写法也很简单
+        <script>
+          CSS.registerProperty({
+            name: "--property-name",
+            syntax: "<color>",
+            inherits: false,
+            initialValue: "#c0ffee"
+          });
+        </script> 
+      */
+
       @property --angle {
-        syntax: '<angle>';
+        syntax: "<angle>";
         inherits: false;
         initial-value: 0deg;
       }
       .g-container {
         width: 260px;
         height: 260px;
-        filter: drop-shadow(0 0 5px hsl(162, 100%, 58%)) drop-shadow(0 0 10px hsl(270, 73%, 53%));
+        /* 
+          filter 滤镜 
+          使用 <shadow> 参数沿图像的轮廓生成阴影效果。阴影语法类似于 <box-shadow>，
+          但不允许使用 inset 关键字以及 spread 参数。与所有 filter 属性值一样，
+          任何在 drop-shadow() 后的滤镜同样会应用在阴影上。
+        */
+        filter: drop-shadow(0 0 5px hsl(162, 100%, 58%))
+          drop-shadow(0 0 10px hsl(270, 73%, 53%));
       }
       .g-triangle {
         width: 200px;
         height: 200px;
-        clip-path: polygon(50% 0%, 0% 100%, 8% 100%, 50% 15%, 88% 93%, 7% 93%, 7% 100%, 100% 100%);
-        background: conic-gradient(from var(--angle), hsl(162, 100%, 58%), hsl(270, 73%, 53%), hsl(162, 100%, 58%));
+        /* clip-path 通过定义特殊的路径，实现我们想要的图形。而这个路径，正是 SVG 中的 path  */
+        clip-path: polygon(
+          50% 0%,
+          0% 100%,
+          8% 100%,
+          50% 15%,
+          88% 93%,
+          7% 93%,
+          7% 100%,
+          100% 100%
+        );
+        background: conic-gradient(
+          from var(--angle),
+          hsl(162, 100%, 58%),
+          hsl(270, 73%, 53%),
+          hsl(162, 100%, 58%)
+        );
         animation: rotate 3s infinite linear;
       }
       @keyframes rotate {
